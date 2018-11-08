@@ -71,4 +71,22 @@ Start the Interactive Shell by running spark-shell from the bin in the Spark ins
 
 ### Create a Dataset
 1. Import Classes
-     case class Incident(incidentnum:String,category:String,description:String, )
+     - import spark.implicits._
+2. Define a case class
+    - case class Incidents(incidentnum:String,category:String,description:String,dayofweek:String,date:String)
+    Remember -> if your case class has more than 22 fields you must define your schema programmatically.
+3.  Load Data
+    - val sfpdDS = spark.read.csv("/path to file/sfpd.csv").as[Incidents]
+4. Register Dataset as View (optional)
+    - sfpdDS.createTempView("sfpd")
+
+#### Create DataFrame and Construct Schema Programmatically
+1.  Import Classes
+    - import spark.implicits._
+      import org.apache.spark.sql.types._
+2.  Create Schema Programmatically
+    - val spdfSchema = StructType(Array(StructField("incidentnum",StringType,true),
+    StructField("category",StringType,true),StructField("description",StringType,true),
+    StructField("dayofweek",StringType,true)),StructField("date",StringType,true))
+3.  Create DataFrame by Loading Data
+    - 
